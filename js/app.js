@@ -186,7 +186,12 @@ class NihonGoApp {
                     </div>
                     <div class="auth-input-group">
                         <label>Kata Sandi</label>
-                        <input type="password" id="login-password" class="auth-input" placeholder="********" required>
+                        <div style="position: relative;">
+                            <input type="password" id="login-password" class="auth-input" placeholder="********" required style="padding-right: 40px;">
+                            <button type="button" onclick="app.togglePasswordVisibility('login-password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted);">
+                                <i data-lucide="eye" id="icon-login-password" style="width: 20px; height: 20px;"></i>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">Masuk Sekarang</button>
                 </form>
@@ -196,6 +201,20 @@ class NihonGoApp {
                 </div>
             </div>
         `;
+    }
+
+    togglePasswordVisibility(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById('icon-' + inputId);
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.setAttribute('data-lucide', 'eye-off');
+        } else {
+            input.type = 'password';
+            icon.setAttribute('data-lucide', 'eye');
+        }
+        lucide.createIcons();
     }
 
     renderSignup() {
@@ -216,7 +235,12 @@ class NihonGoApp {
                     </div>
                     <div class="auth-input-group">
                         <label>Kata Sandi</label>
-                        <input type="password" id="signup-password" class="auth-input" placeholder="Min. 6 karakter" required minlength="6">
+                        <div style="position: relative;">
+                            <input type="password" id="signup-password" class="auth-input" placeholder="Min. 6 karakter" required minlength="6" style="padding-right: 40px;">
+                            <button type="button" onclick="app.togglePasswordVisibility('signup-password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted);">
+                                <i data-lucide="eye" id="icon-signup-password" style="width: 20px; height: 20px;"></i>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">Daftar & Belajar</button>
                 </form>
@@ -264,18 +288,38 @@ class NihonGoApp {
             return;
         }
 
+        // Check for guest progress to migrate automatically
+        const guestProgress = JSON.parse(localStorage.getItem('nihongo_guest_progress'));
+        let userProgress = {
+            learned: [],
+            daily: [0, 0, 0, 0, 0, 0, 0]
+        };
+
+        if (guestProgress) {
+            userProgress = guestProgress;
+        }
+
         this.users[user] = {
             name: name,
             password: pass,
-            progress: {
-                learned: [],
-                daily: [0, 0, 0, 0, 0, 0, 0]
-            }
+            progress: userProgress
         };
 
         localStorage.setItem('nihongo_users', JSON.stringify(this.users));
-        alert('Pendaftaran berhasil! Silakan masuk.');
-        location.hash = '#login';
+
+        // Auto Login Logic
+        this.currentUser = user;
+        localStorage.setItem('nihongo_auth', JSON.stringify(user));
+        this.loadUserProgress();
+
+        // Clear guest progress if it was migrated
+        if (guestProgress) {
+            localStorage.removeItem('nihongo_guest_progress');
+        }
+
+        alert('Pendaftaran berhasil! Selamat datang, ' + name + '!');
+        location.hash = '#dashboard';
+        this.handleRouting();
     }
 
     handleLogout() {
@@ -283,7 +327,7 @@ class NihonGoApp {
             this.currentUser = null;
             localStorage.removeItem('nihongo_auth');
             this.loadUserProgress();
-            location.hash = '#dashboard';
+            location.hash = '#login';
             this.handleRouting();
         }
     }
