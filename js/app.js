@@ -201,6 +201,7 @@ class NihonGoApp {
                 </div>
             </div>
         `;
+        lucide.createIcons();
     }
 
     togglePasswordVisibility(inputId) {
@@ -250,6 +251,7 @@ class NihonGoApp {
                 </div>
             </div>
         `;
+        lucide.createIcons();
     }
 
     handleLogin(e) {
