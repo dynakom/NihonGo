@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NihonGo! - Belajar Bahasa Jepang dengan Mudah</title>
+    <meta name="description"
+        content="Aplikasi belajar Bahasa Jepang interaktif untuk pemula hingga tingkat lanjut. Pelajari Hiragana, Katakana, Kanji, dan Tata Bahasa.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="logo">
+                <span class="logo-icon">🎌</span>
+                <span class="logo-text">NihonGo!</span>
+            </div>
+            <div class="nav-links">
+                <a href="#dashboard" class="nav-link active">Dashboard</a>
+                <a href="#lessons" class="nav-link">Pelajaran</a>
+                <a href="#quiz" class="nav-link">Latihan</a>
+                <a href="#profile" class="nav-link">Progres</a>
+                <a href="#about" class="nav-link">Tentang</a>
+                <a id="nav-auth-btn" href="#login" class="nav-link"
+                    style="color: var(--primary); font-weight: 700;">Masuk</a>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+            <!-- Content will be injected here by app.js -->
+            <div class="loader-container">
+                <div class="loader"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
